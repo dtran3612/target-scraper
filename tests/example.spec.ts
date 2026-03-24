@@ -9,6 +9,7 @@ test.beforeEach(async({page})=>{
 test('navigate to page', async({page})=> {
     const pm = new PageManager(page)
     await pm.navigateTo().categoriesNewArrivals()
+    await pm.navigateTo().categoriesGroceryFrozenFoods()
 })
 
 // test('update shipping location', async ({ page }) => {
