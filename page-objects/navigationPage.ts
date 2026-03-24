@@ -1,4 +1,4 @@
-import {Locator, Page} from "@playwright/test"
+import {expect, Locator, Page} from "@playwright/test"
 import { HelperBase } from "./helperBase"
 
 export class NavigationPage extends HelperBase{
@@ -33,11 +33,29 @@ export class NavigationPage extends HelperBase{
         await this.page.locator('[data-test="@web/LocationFlyout/UpdateLocationButton"]').click()
     }
 
-    // private async selectGroupMenuItem(groupItemTitle: string){
-    //     const groupMenuItem = this.page.getByTitle(groupItemTitle)
-    //     const expandedState = await groupMenuItem.getAttribute('aria-expanded')
-    //     if(expandedState == "false"){
-    //         await groupMenuItem.click()
-    //     }
-    // }
+    /**
+     * Login method
+     * @param username [Input][String]username
+     * @param password [Input][String]password
+     */
+    async submitSignInOrCreateAccount(username: string, password: string){
+        await this.page.locator('[data-test="@web/AccountLink"]').click()
+        await this.page.locator('[data-test="accountNav-signIn"]').click()
+        await this.waitForNumberOfSeconds(1) // 🚧>1?
+        await this.page.getByRole('textbox', { name: 'Email or mobile phone' }).fill(username)
+        await this.page.getByRole('button', { name: 'Continue' }).click()
+        await this.page.getByRole('button', { name: 'Enter your password' }).click()
+        await this.page.locator('[data-test="login-password"]').fill(password)
+        await this.page.getByRole('button', { name: 'Sign in with password' }).click()
+        await this.waitForNumberOfSeconds(1) // 🚧>1?
+        await expect(this.page.locator('[data-test="@web/AccountLink"]')).toHaveText('Hi, Duong')
+    }
+
+
+    async submitSignout(){
+        await this.page.locator('[data-test="@web/AccountLink"]').click()
+        await this.waitForNumberOfSeconds(1) // 🚧>1?
+        await this.page.locator('[data-test="accountNav-guestSignOut"]').click()
+        await expect(this.page.locator('[data-test="@web/AccountLink"]')).toHaveText('Account')
+    }
 }
