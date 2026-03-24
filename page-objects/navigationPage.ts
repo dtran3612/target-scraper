@@ -19,6 +19,12 @@ export class NavigationPage extends HelperBase{
         await this.waitForNumberOfSeconds(1) // 🚧>1?
     }
 
+    async listAndFavorites(){
+        await this.page.locator('[data-test="@web/AccountLink"]').click()
+        await this.waitForNumberOfSeconds(1) // 🚧>1?
+        await this.page.locator('[data-test="accountNav-listsAndFavorites"]').click()
+    }
+
     /**
      * This method will fill out the zipcode form
      * @param zipcode input zip
@@ -26,11 +32,14 @@ export class NavigationPage extends HelperBase{
     async submitUpdateShippingZip(zipcode: string){
         const formUpdateShippingZip = this.page.locator('[data-test="@web/ZipCodeButton/StyledZipCodeButton"]')
         await formUpdateShippingZip.click()
+        await this.waitForNumberOfSeconds(1) // 🚧>1?
         const zipInput = this.page.locator('[data-test="@web/LocationFlyout/FormInput"]')
+        await this.waitForNumberOfSeconds(1) // 🚧>1?
         await zipInput.clear()
         await zipInput.fill(zipcode)
         await this.waitForNumberOfSeconds(1) // 🚧>1?
         await this.page.locator('[data-test="@web/LocationFlyout/UpdateLocationButton"]').click()
+        await this.waitForNumberOfSeconds(1) // 🚧>1?
     }
 
     /**
@@ -42,10 +51,10 @@ export class NavigationPage extends HelperBase{
         await this.page.locator('[data-test="@web/AccountLink"]').click()
         await this.page.locator('[data-test="accountNav-signIn"]').click()
         await this.waitForNumberOfSeconds(1) // 🚧>1?
-        await this.page.getByRole('textbox', { name: 'Email or mobile phone' }).fill(username)
+        await this.page.getByRole('textbox', { name: 'Email or mobile phone' }).pressSequentially(username,{delay:250})
         await this.page.getByRole('button', { name: 'Continue' }).click()
         await this.page.getByRole('button', { name: 'Enter your password' }).click()
-        await this.page.locator('[data-test="login-password"]').fill(password)
+        await this.page.locator('[data-test="login-password"]').pressSequentially(password,{delay:250})
         await this.page.getByRole('button', { name: 'Sign in with password' }).click()
         await this.waitForNumberOfSeconds(1) // 🚧>1?
         await expect(this.page.locator('[data-test="@web/AccountLink"]')).toHaveText('Hi, Duong')
