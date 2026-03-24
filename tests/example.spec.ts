@@ -8,20 +8,15 @@ test.beforeEach(async({page})=>{
 
 test('navigate to page', async({page})=> {
     const pm = new PageManager(page)
-    await pm.navigateTo().categoriesNewArrivals()
     await pm.navigateTo().categoriesGroceryFrozenFoods()
+    await pm.onFrozenFoodsGroceryPage().clickFrozenFoodsGrocery()
+    await page.waitForTimeout(3000) //✅
 })
 
 // test('update shipping location', async ({ page }) => {
-//   await page.locator('[data-test="@web/ZipCodeButton/StyledZipCodeButton"]').click()
-//   // await page.waitForTimeout(1000) //✅
-
-//   const zipInput = page.locator('[data-test="@web/LocationFlyout/FormInput"]')
-//   await zipInput.clear()
-//   await zipInput.fill('90250')
-
-//   // await page.waitForTimeout(1000) //✅
-//   await page.locator('[data-test="@web/LocationFlyout/UpdateLocationButton"]').click()
+//     const pm = new PageManager(page)
+//     await pm.navigateTo().submitUpdateShippingZip('90210')
+//     await page.waitForTimeout(3000) //✅
 // });
 
 // //[TODO-Later]
