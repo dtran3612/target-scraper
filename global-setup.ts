@@ -7,6 +7,9 @@ import dotenv from 'dotenv';
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+// Cache duration in hours (default: 24 hours)
+const CACHE_DURATION_HOURS = parseInt(process.env.AUTH_CACHE_HOURS || '24', 10);
+
 async function globalSetup(config: FullConfig) {
   console.log('🔧 Starting global setup...');
 
@@ -23,6 +26,26 @@ async function globalSetup(config: FullConfig) {
     console.log('✅ Created .auth directory');
   }
 
+  const statePath = path.join(authDir, 'user.json');
+
+  // Check if storage state exists and is fresh
+  if (fs.existsSync(statePath)) {
+    const stats = fs.statSync(statePath);
+    const ageInHours = (Date.now() - stats.mtimeMs) / (1000 * 60 * 60);
+
+    if (ageInHours < CACHE_DURATION_HOURS) {
+      console.log(`⚡ Using cached authentication (${ageInHours.toFixed(1)}h old, expires in ${(CACHE_DURATION_HOURS - ageInHours).toFixed(1)}h)`);
+      console.log('💨 Skipping login - storage state is fresh!');
+      console.log('🏁 Global setup completed (cached)');
+      return;
+    } else {
+      console.log(`⏰ Storage state expired (${ageInHours.toFixed(1)}h old) - re-authenticating...`);
+    }
+  } else {
+    console.log('📝 No cached storage state found - performing fresh login...');
+  }
+
+  // Proceed with login
   const browser = await chromium.launch({ headless: process.env.CI ? true : false });
   const context = await browser.newContext({
     ignoreHTTPSErrors: true  // Needed for WebKit on Windows
@@ -68,9 +91,9 @@ async function globalSetup(config: FullConfig) {
     }
 
     // Save storage state
-    const statePath = path.join(authDir, 'user.json');
     await context.storageState({ path: statePath });
     console.log('✅ Storage state saved to:', statePath);
+    console.log(`⏰ Cache expires in ${CACHE_DURATION_HOURS} hours`);
 
   } catch (error) {
     console.error('❌ Global setup failed:', error);
