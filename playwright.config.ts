@@ -14,6 +14,8 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   timeout: 60000,
   testDir: './tests',
+  /* Run global setup to authenticate once before all tests */
+  globalSetup: './global-setup.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -28,6 +30,12 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
+
+    /* Use authenticated state from global setup */
+    storageState: '.auth/user.json',
+
+    /* Ignore HTTPS errors (needed for WebKit on Windows) */
+    ignoreHTTPSErrors: true,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on'

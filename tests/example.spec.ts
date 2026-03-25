@@ -14,9 +14,9 @@ test('navigate to page', async({page})=> {
     // pm.navigateTo().submitUpdateShippingZip('90210')
 
     // await pm.onFrozenFoodsGroceryPage().clickFrozenFoodsGrocery()
-    
-    await pm.navigateTo().submitSignInOrCreateAccount('dtran3612@gmail.com','@Dt145623!@#')
-    await page.waitForTimeout(5000) //✅
+
+    // Login handled by global setup - storage state is already authenticated
+    await page.waitForTimeout(2000) //✅
     await pm.navigateTo().listAndFavorites()
 
     // await pm.navigateTo().submitSignout()

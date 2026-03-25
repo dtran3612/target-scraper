@@ -1,1 +1,28 @@
+# Claude Code project instructions (remove this line if you want to share .claude/CLAUDE.md with your team)
 .claude
+
+# Environment variables
+.env
+.env.local
+
+# Dependencies
+node_modules/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Authentication state
+.auth/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
