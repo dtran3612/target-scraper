@@ -9,13 +9,9 @@ export class MyShoppingList extends HelperBase{
     }
 
     async getShoppingList(): Promise<ScrapedProduct> {
-        // await this.page.getByRole('link', { name: 'Ice Cream & Novelties' }).click()
         const shoppingList = this.page.locator('.list-view_list-detail__KZJJf')
         const firstProductCard = shoppingList.locator('div.product-card_product-card__Z_hn_').first()
-        // const allProductCards = shoppingList.locator('div.product-card_product-card__Z_hn_')
-
         const product_tin = await firstProductCard.getAttribute('data-test')
-        // console.log(`[DEBUG] ProductTIN: ${productTIN}`)
 
         const title = await firstProductCard.locator('[data-test="item-title"]').textContent()
         const price = await firstProductCard.locator('[data-test="product-price"]').textContent()
@@ -30,7 +26,6 @@ export class MyShoppingList extends HelperBase{
             scraped_at: new Date().toISOString()
         }
 
-        // Store in Supabase
         await this.storeToSupabase('products', scrapedProduct)
         return scrapedProduct
     }

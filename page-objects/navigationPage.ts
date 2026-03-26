@@ -27,23 +27,6 @@ export class NavigationPage extends HelperBase{
     }
 
     /**
-     * This method will fill out the zipcode form
-     * @param zipcode input zip
-     */
-    async submitUpdateShippingZip(zipcode: string){
-        const formUpdateShippingZip = this.page.locator('[data-test="@web/ZipCodeButton/StyledZipCodeButton"]')
-        await formUpdateShippingZip.click()
-        await this.waitForNumberOfSeconds(1) // 🚧>1?
-        const zipInput = this.page.locator('[data-test="@web/LocationFlyout/FormInput"]')
-        await this.waitForNumberOfSeconds(1) // 🚧>1?
-        await zipInput.clear()
-        await zipInput.fill(zipcode)
-        await this.waitForNumberOfSeconds(1) // 🚧>1?
-        await this.page.locator('[data-test="@web/LocationFlyout/UpdateLocationButton"]').click()
-        await this.waitForNumberOfSeconds(1) // 🚧>1?
-    }
-
-    /**
      * Login method
      * @param username [Input][String]username
      * @param password [Input][String]password
