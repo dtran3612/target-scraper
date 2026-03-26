@@ -23,6 +23,7 @@ export class NavigationPage extends HelperBase{
         await this.page.locator('[data-test="@web/AccountLink"]').click()
         await this.waitForNumberOfSeconds(1) // 🚧>1?
         await this.page.locator('[data-test="accountNav-listsAndFavorites"]').click()
+        await this.page.locator('[data-test="My Shopping list"]').click()
     }
 
     /**
